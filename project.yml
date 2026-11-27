@@ -1,0 +1,93 @@
+name: TapeCalc
+options:
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: zh-Hans
+  knownRegions: [zh-Hans, en, zh-Hant, ja, ko, de, es, fr, pt-BR, it, nl]
+settings:
+  base:
+    APP_ID: com.hgsldswk.tapecalc
+    APP_STORE_ID: "6837217916"
+    MARKETING_VERSION: "1.0.2"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) DEBUG"
+targets:
+  TapeCalc:
+    type: application
+    platform: iOS
+    sources: [TapeCalc, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_ID)
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        Release:
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: Apple Distribution
+          PROVISIONING_PROFILE_SPECIFIER: TapeCalc AppStore
+    info:
+      path: TapeCalc/Info.plist
+      properties:
+        CFBundleDisplayName: 纸带计算器
+        CFBundleDevelopmentRegion: zh-Hans
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        ITSAppUsesNonExemptEncryption: false
+        APP_STORE_ID: $(APP_STORE_ID)
+        TapeProProductID: $(APP_ID).pro
+        TapeTrialProductID: $(APP_ID).trial
+        LSSupportsOpeningDocumentsInPlace: true
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Sum Tape
+            CFBundleTypeRole: Editor
+            LSHandlerRank: Owner
+            LSItemContentTypes: [com.hgsldswk.tapecalc.sumtape]
+        UTExportedTypeDeclarations:
+          - UTTypeIdentifier: com.hgsldswk.tapecalc.sumtape
+            UTTypeDescription: Sum Tape
+            UTTypeConformsTo: [public.json]
+            UTTypeTagSpecification:
+              public.filename-extension: [sumtape]
+  TapeCalcTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [TapeCalcTests, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_ID).tests
+        GENERATE_INFOPLIST_FILE: YES
+  TapeCalcUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [TapeCalcUITests]
+    dependencies:
+      - target: TapeCalc
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_ID).uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: TapeCalc
+schemes:
+  TapeCalc:
+    build:
+      targets:
+        TapeCalc: all
+        TapeCalcTests: [test]
+    test:
+      config: Debug
+      targets: [TapeCalcTests]
+  TapeCalcUI:
+    build:
+      targets:
+        TapeCalc: all
+        TapeCalcUITests: [test]
+    test:
+      config: Debug
+      targets: [TapeCalcUITests]
